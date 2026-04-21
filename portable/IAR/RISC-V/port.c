@@ -68,7 +68,7 @@
  * interrupt stack after the scheduler has started. */
 #ifdef configISR_STACK_SIZE_WORDS
 static __attribute__( ( aligned( 16 ) ) ) StackType_t xISRStack[ configISR_STACK_SIZE_WORDS ] = { 0 };
-const StackType_t xISRStackTop = ( StackType_t ) &( xISRStack[ configISR_STACK_SIZE_WORDS & ~portBYTE_ALIGNMENT_MASK ] );
+const uintptr_t xISRStackTop = ( uintptr_t ) &( xISRStack[ configISR_STACK_SIZE_WORDS & ~portBYTE_ALIGNMENT_MASK ] );
 
 /* Don't use 0xa5 as the stack fill bytes as that is used by the kernel for
  * the task stacks, and so will legitimately appear in many positions within
@@ -76,7 +76,7 @@ const StackType_t xISRStackTop = ( StackType_t ) &( xISRStack[ configISR_STACK_S
     #define portISR_STACK_FILL_BYTE    0xee
 #else
     extern const uint32_t __freertos_irq_stack_top[];
-    const StackType_t xISRStackTop = ( StackType_t ) __freertos_irq_stack_top;
+    const uintptr_t xISRStackTop = ( uintptr_t ) __freertos_irq_stack_top;
 #endif
 
 /**
